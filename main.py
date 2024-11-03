@@ -33,13 +33,14 @@ class Player:
         # Update posisi dalam grid (hanya satu tile per input)
         self.grid_x += dx
         self.grid_y += dy
-        self.pixel_position = grid_to_isometric(self.grid_x, self.grid_y)
+        self.pixel_position = grid_to_isometric(
+            self.grid_x-0.5, self.grid_y-0.5)
 
 
 def grid_to_isometric(grid_x, grid_y):
     iso_x = (grid_x - grid_y) * TILE_WIDTH // 2
     iso_y = (grid_x + grid_y) * TILE_HEIGHT // 2
-    return (iso_x + WIDTH // 2, iso_y + HEIGHT // 4)
+    return (iso_x + WIDTH // 2 + TILE_WIDTH // 2, iso_y + HEIGHT // 4 + TILE_HEIGHT // 2)
 
 
 def draw_grid():
