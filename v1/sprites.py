@@ -6,8 +6,9 @@ import random
 
 class Spritesheet:
     """
-      function for access image or asset for this gane
+    function for access image or asset for this gane
     """
+
     def __init__(self, file):
         self.sheet = pygame.image.load(file).convert()
 
@@ -20,7 +21,7 @@ class Spritesheet:
 
 class Player(pygame.sprite.Sprite):
     """
-      function for create sprite Player
+    function for create sprite Player
     """
 
     def __init__(self, game, x, y):
@@ -56,7 +57,9 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.movement()
         self.rect.x += self.x_change
+        self.collide_blocks('x')
         self.rect.y += self.y_change
+        self.collide_blocks('y')
         self.x_change = 0
         self.y_change = 0
 
@@ -74,6 +77,24 @@ class Player(pygame.sprite.Sprite):
         if kesy[pygame.K_DOWN]:
             self.y_change += PLAYER_SPEED
             self.facing = "down"
+
+    # function for colletion
+    def collide_blocks(self, direction):
+        if direction == "x":
+            hits = pygame.sprite.spritecollide(self, self.game.bloks, False)
+            if hits:
+                if self.x_change > 0:
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                if self.x_change < 0:
+                    self.rect.x = hits[0].rect.right
+
+        if direction == "y":
+            hits = pygame.sprite.spritecollide(self, self.game.bloks, False)
+            if hits:
+                if self.y_change > 0:
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                if self.y_change < 0:
+                    self.rect.y = hits[0].rect.bottom
 
 
 class Block(pygame.sprite.Sprite):
@@ -117,4 +138,3 @@ class Ground(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
-
