@@ -23,7 +23,10 @@ class Game:
         self.player = Player(self, 1, 2)
 
     def events(self):
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.playing = False
+                self.running = False
 
     def update(self):
         pass
