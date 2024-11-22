@@ -22,6 +22,9 @@ class Game:
 
         self.player = Player(self, 1, 2)
 
+    def events(self):
+        pass
+
     def update(self):
         pass
 
@@ -29,7 +32,13 @@ class Game:
         pass
 
     def main(self):
-        pass
+        ''' Game Loop '''
+        while self.playing:
+            self.events()
+            self.update()
+            self.draw()
+
+        self.running = False
 
     def game_over(self):
         pass
