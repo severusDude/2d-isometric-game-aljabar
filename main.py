@@ -20,7 +20,7 @@ class Game:
         self.enemies = pygame.sprite.LayeredUpdates()
         self.attacks = pygame.sprite.LayeredUpdates()
 
-        self.player = Player()
+        self.player = Player(self, 1, 2)
 
     def update(self):
         pass
