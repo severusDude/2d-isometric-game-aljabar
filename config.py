@@ -1,5 +1,8 @@
-SPRITE_CHARACTER = R"img/character.png"
-SPRITE_TERRAIN = R"img/terrain.png"
+SPRITE_CHARACTER_FILE = R"img/character.png"
+SPRITE_TERRAIN_FILE = R"img/terrain.png"
+
+SPRITE_CHARACTER_COORD = (3, 2)
+SPRITE_BLOCK_COORD = (960, 448)
 
 WIN_WIDTH = 640
 WIN_HEIGHT = 480

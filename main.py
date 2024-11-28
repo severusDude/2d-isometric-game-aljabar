@@ -12,8 +12,8 @@ class Game:
         # self.font = pygame.font.Font('Arial', 32)
         self.running = True
 
-        self.character_spritesheet = Spritesheet(SPRITE_CHARACTER)
-        self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN)
+        self.character_spritesheet = Spritesheet(SPRITE_CHARACTER_FILE)
+        self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN_FILE)
 
     def createTileMap(self):
         for i, row in enumerate(tilemap):

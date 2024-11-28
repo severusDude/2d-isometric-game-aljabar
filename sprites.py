@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.height = TILE_SIZE
 
         self.image = self.game.character_spritesheet.get_sprite(
-            3, 2, self.width, self.height)
+            *SPRITE_CHARACTER_COORD, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
 
 
 class Blocks(pygame.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game: Game, x, y):
         self.game = game
         self._layer = BLOCK_LAYER
         self.groups = self.game.all_sprites, self.game.blocks
@@ -71,8 +71,8 @@ class Blocks(pygame.sprite.Sprite):
         self.width = TILE_SIZE
         self.height = TILE_SIZE
 
-        self.image = pygame.Surface([self.width, self.height])
-        self.image.fill(COLOR_BLUE)
+        self.image = self.game.terrain_spritesheet.get_sprite(
+            *SPRITE_BLOCK_COORD, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
