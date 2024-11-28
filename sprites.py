@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 from config import *
+from main import Game
 
 
 class Spritesheet:
@@ -16,7 +17,7 @@ class Spritesheet:
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game: Game, x, y):
         self.game = game
         self._layer = PLAYER_LAYER
         self.groups = self.game.all_sprites
@@ -28,8 +29,8 @@ class Player(pygame.sprite.Sprite):
         self.width = TILE_SIZE
         self.height = TILE_SIZE
 
-        self.image = pygame.Surface([self.width, self.height])
-        self.image.fill(COLOR_RED)
+        self.image = self.game.character_spritesheet.get_sprite(
+            3, 2, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
