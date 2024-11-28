@@ -12,6 +12,9 @@ class Game:
         # self.font = pygame.font.Font('Arial', 32)
         self.running = True
 
+        self.character_spritesheet = Spritesheet(SPRITE_CHARACTER)
+        self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN)
+
     def new(self):
         self.playing = True
 
