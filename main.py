@@ -15,6 +15,14 @@ class Game:
         self.character_spritesheet = Spritesheet(SPRITE_CHARACTER)
         self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN)
 
+    def createTileMap(self):
+        for i, row in enumerate(tilemap):
+            for j, column in enumerate(row):
+                if column == 'B':
+                    Blocks(self, j, i)
+                if column == 'P':
+                    self.player = Player(self, j, i)
+
     def new(self):
         self.playing = True
 
@@ -23,7 +31,7 @@ class Game:
         self.enemies = pygame.sprite.LayeredUpdates()
         self.attacks = pygame.sprite.LayeredUpdates()
 
-        self.player = Player(self, 1, 2)
+        self.createTileMap()
 
     def events(self):
         for event in pygame.event.get():
@@ -41,7 +49,7 @@ class Game:
         pygame.display.update()
 
     def main(self):
-        ''' Game Loop '''
+        """Game Loop"""
         while self.playing:
             self.events()
             self.update()
@@ -56,7 +64,7 @@ class Game:
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     g = Game()
     g.intro_screen()
     g.new()
