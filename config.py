@@ -1,3 +1,6 @@
+SPRITE_CHARACTER = R"img/character.png"
+SPRITE_TERRAIN = R"img/terrain.png"
+
 WIN_WIDTH = 640
 WIN_HEIGHT = 480
 TILE_SIZE = 32
