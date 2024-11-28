@@ -33,9 +33,10 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
 
         self.facing = 'down'
+        self.animation_loop = 1
 
         self.image = self.game.character_spritesheet.get_sprite(
-            *SPRITE_CHARACTER_COORD, self.width, self.height)
+            *SPRITE_CHARACTER['down'][0], self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
@@ -43,10 +44,13 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.movement()
+        self.animate()
+
         self.rect.x += self.x_change
         self.collide_Blocks("x")
         self.rect.y += self.y_change
         self.collide_Blocks("y")
+
         self.x_change = 0
         self.y_change = 0
 
@@ -81,6 +85,32 @@ class Player(pygame.sprite.Sprite):
                     self.rect.y = hits[0].rect.top - self.height
                 if self.y_change < 0:
                     self.rect.y = hits[0].rect.bottom
+
+    def animate(self):
+        match self.facing:
+            case 'down':
+                self.animate_movement(
+                    SPRITE_CHARACTER['down'], self.y_change)
+            case 'up':
+                self.animate_movement(
+                    SPRITE_CHARACTER['up'], self.y_change)
+            case 'left':
+                self.animate_movement(
+                    SPRITE_CHARACTER['left'], self.x_change)
+            case 'right':
+                self.animate_movement(
+                    SPRITE_CHARACTER['right'], self.x_change)
+
+    def animate_movement(self, orientation: str, axis_change: int):
+        if axis_change == 0:
+            self.image = self.game.character_spritesheet.get_sprite(
+                *orientation[0], self.width, self.height)
+        else:
+            self.image = self.game.character_spritesheet.get_sprite(
+                *orientation[math.floor(self.animation_loop)], self.width, self.height)
+            self.animation_loop += 0.1
+            if self.animation_loop >= 3:
+                self.animation_loop = 1
 
 
 class Blocks(pygame.sprite.Sprite):
