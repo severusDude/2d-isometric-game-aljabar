@@ -29,6 +29,11 @@ class Player(pygame.sprite.Sprite):
         self.width = TILE_SIZE
         self.height = TILE_SIZE
 
+        self.x_change = 0
+        self.y_change = 0
+
+        self.facing = 'down'
+
         self.image = self.game.character_spritesheet.get_sprite(
             *SPRITE_CHARACTER_COORD, self.width, self.height)
 
@@ -37,6 +42,26 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = self.y
 
     def update(self):
+        self.movement()
+        self.rect.x += self.x_change
+        self.rect.y += self.y_change
+        self.x_change = 0
+        self.y_change = 0
+
+    def movement(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.x_change -= PLAYER_SPEED
+            self.facing = 'left'
+        if keys[pygame.K_RIGHT]:
+            self.x_change += PLAYER_SPEED
+            self.facing = 'right'
+        if keys[pygame.K_UP]:
+            self.y_change -= PLAYER_SPEED
+            self.facing = 'up'
+        if keys[pygame.K_DOWN]:
+            self.y_change += PLAYER_SPEED
+            self.facing = 'down'
         self.collide_Blocks("x")
         self.collide_Blocks("y")
         pass
