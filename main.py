@@ -18,6 +18,7 @@ class Game:
     def createTileMap(self):
         for i, row in enumerate(tilemap):
             for j, column in enumerate(row):
+                Ground(self, j, i)
                 if column == 'B':
                     Blocks(self, j, i)
                 if column == 'P':
