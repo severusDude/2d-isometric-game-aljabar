@@ -44,7 +44,9 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.movement()
         self.rect.x += self.x_change
+        self.collide_Blocks("x")
         self.rect.y += self.y_change
+        self.collide_Blocks("y")
         self.x_change = 0
         self.y_change = 0
 
@@ -62,9 +64,6 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_DOWN]:
             self.y_change += PLAYER_SPEED
             self.facing = 'down'
-        self.collide_Blocks("x")
-        self.collide_Blocks("y")
-        pass
 
     def collide_Blocks(self, direction):
         if direction == "x":
