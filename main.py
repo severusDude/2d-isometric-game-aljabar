@@ -15,13 +15,15 @@ class Game:
         self.character_spritesheet = Spritesheet(SPRITE_CHARACTER_FILE)
         self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN_FILE)
 
+        self.attack_spritesheet = Spritesheet("img/attack.png")
+
     def createTileMap(self):
         for i, row in enumerate(tilemap):
             for j, column in enumerate(row):
                 Ground(self, j, i)
-                if column == 'B':
+                if column == "B":
                     Blocks(self, j, i)
-                if column == 'P':
+                if column == "P":
                     self.player = Player(self, j, i)
 
     def new(self):
@@ -39,6 +41,20 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    if self.player.facing == "up":
+                        Attack(self, self.player.rect.x,
+                               self.player.rect.y - TILE_SIZE)
+                    if self.player.facing == "down":
+                        Attack(self, self.player.rect.x,
+                               self.player.rect.y + TILE_SIZE)
+                    if self.player.facing == "left":
+                        Attack(self, self.player.rect.x -
+                               TILE_SIZE, self.player.rect.y)
+                    if self.player.facing == "up":
+                        Attack(self, self.player.rect.x +
+                               TILE_SIZE, self.player.rect.y)
 
     def update(self):
         self.all_sprites.update()
