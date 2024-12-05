@@ -216,22 +216,22 @@ class Attack(pygame.sprite.Sprite):
         ]
 
         if direction == "up":
-            self.image = up_animations(math.floor(self.animation_loop))
+            self.image = up_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "down":
-            self.image = down_animations(math.floor(self.animation_loop))
+            self.image = down_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "left":
-            self.image = left_animations(math.floor(self.animation_loop))
+            self.image = left_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "right":
-            self.image = right_animations(math.floor(self.animation_loop))
+            self.image = right_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
