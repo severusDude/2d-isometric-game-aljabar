@@ -52,7 +52,7 @@ class Game:
                     if self.player.facing == "left":
                         Attack(self, self.player.rect.x -
                                TILE_SIZE, self.player.rect.y)
-                    if self.player.facing == "up":
+                    if self.player.facing == "right":
                         Attack(self, self.player.rect.x +
                                TILE_SIZE, self.player.rect.y)
 
