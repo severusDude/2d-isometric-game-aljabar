@@ -9,12 +9,14 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
         self.clock = pygame.time.Clock()
-        # self.font = pygame.font.Font('Arial', 32)
+        self.font = pygame.font.Font(size=32)
         self.running = True
 
         self.character_spritesheet = Spritesheet(SPRITE_CHARACTER_FILE)
         self.terrain_spritesheet = Spritesheet(SPRITE_TERRAIN_FILE)
-
+        self.enemy_spritesheet = Spritesheet(SPRITE_ENEMY_FILE)
+        self.intro_background = pygame.image.load("img/introbackground.png")
+        self.go_background = pygame.image.load("img/gameover.png")
         self.attack_spritesheet = Spritesheet("img/attack.png")
 
     def createTileMap(self):
@@ -23,7 +25,9 @@ class Game:
                 Ground(self, j, i)
                 if column == "B":
                     Blocks(self, j, i)
-                if column == "P":
+                if column == "E":
+                    Enemy(self, j, i)
+                if column == "P":  
                     self.player = Player(self, j, i)
 
     def new(self):
@@ -72,13 +76,60 @@ class Game:
             self.update()
             self.draw()
 
-        self.running = False
+
 
     def game_over(self):
-        pass
+        text = self.font.render('Game Over', True, COLOR_WHITE)
+        text_rect = text.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2))
+
+        restart_button = Button(10, WIN_HEIGHT - 60, 120, 50, COLOR_WHITE, COLOR_BLACK, 'Restart Game', 32)
+
+        for sprite in self.all_sprites:  
+            sprite.kill()
+        
+        while self.running:
+            for event in pygame.event.get(): 
+                if event.type == pygame.QUIT:
+                    self.running = False
+            
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if restart_button.is_pressed(mouse_pos, mouse_pressed):
+                self.new()
+                self.main()
+
+            self.screen.blit(self.go_background, (0,0))
+            self.screen.blit(text, text_rect)
+            self.screen.blit(restart_button.image, restart_button.rect)
+            self.clock.tick(FPS)
+            pygame.display.update()
 
     def intro_screen(self):
-        pass
+        intro = True
+
+        title = self.font.render('Great Game', True, COLOR_BLACK)
+        title_rect = title.get_rect(x=100, y=100)
+
+        play_button = Button(100, 50, 100, 50, COLOR_WHITE, COLOR_BLACK, 'PLAY', 32)
+
+        while intro:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    intro = False
+                    self.running = False
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if play_button.is_pressed(mouse_pos, mouse_pressed):
+                intro = False
+
+            self.screen.blit(self.intro_background, (0,0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(play_button.image, play_button.rect)
+            self.clock.tick(FPS)
+            pygame.display.update()
 
 
 if __name__ == "__main__":
@@ -88,6 +139,7 @@ if __name__ == "__main__":
 
     while g.running:
         g.main()
+        g.game_over()
 
     pygame.quit()
     sys.exit()
