@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.movement()
         self.animate()
+        self.collide_enemy()
 
         self.rect.x += self.x_change
         self.collide_Blocks("x")
@@ -68,6 +69,12 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_DOWN]:
             self.y_change += PLAYER_SPEED
             self.facing = 'down'
+
+    def collide_enemy(self):
+        hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
+        if hits:
+            self.kill()
+            self.game.playing = False
 
     def collide_Blocks(self, direction):
         if direction == "x":
@@ -111,6 +118,84 @@ class Player(pygame.sprite.Sprite):
             self.animation_loop += 0.1
             if self.animation_loop >= 3:
                 self.animation_loop = 1
+
+class Enemy(pygame.sprite.Sprite) :
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = ENEMY_LAYER
+        self.groups = self.game.all_sprites, self.game.enemies
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILE_SIZE
+        self.y = y * TILE_SIZE
+        self.width = TILE_SIZE
+        self.height = TILE_SIZE
+
+        self.x_change = 0
+        self.y_change = 0
+
+        self.facing = random.choice(['left', 'right'])
+        self.animation_loop = 1
+        self.movement_loop = 0
+        self.max_travel = random.randint(7, 30)
+
+        self.image = self.game.enemy_spritesheet.get_sprite(3, 2, self.width, self.height)
+        self.image.set_colorkey(COLOR_BLACK)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.movement()
+        self.animate()
+
+        self.rect.x += self.x_change
+        self.rect.y += self.y_change
+
+        self.x_change = 0
+        self.y_change = 0
+
+    def movement(self):
+        if self.facing == 'left':
+            self.x_change -= ENEMY_SPEED
+            self.movement_loop -= 1
+            if self.movement_loop <= -self.max_travel:
+                self.facing = 'right'
+        
+        if self.facing == 'right':
+            self.x_change += ENEMY_SPEED
+            self.movement_loop += 1
+            if self.movement_loop >= self.max_travel:
+                self.facing = 'left'
+
+    def animate(self):
+         match self.facing:
+            case 'down':
+                self.enemy_movement(
+                    SPRITE_CHARACTER['down'], self.y_change)
+            case 'up':
+                self.enemy_movement(
+                    SPRITE_CHARACTER['up'], self.y_change)
+            case 'left':
+                self.enemy_movement(
+                    SPRITE_CHARACTER['left'], self.x_change)
+            case 'right':
+                self.enemy_movement(
+                    SPRITE_CHARACTER['right'], self.x_change)
+    
+    def enemy_movement(self, orientation: str, axis_change: int):
+        if axis_change == 0:
+            self.image = self.game.character_spritesheet.get_sprite(
+                *orientation[0], self.width, self.height)
+        else:
+            self.image = self.game.character_spritesheet.get_sprite(
+                *orientation[math.floor(self.animation_loop)], self.width, self.height)
+            self.animation_loop += 0.1
+            if self.animation_loop >= 3:
+                self.animation_loop = 1
+
 
 
 class Blocks(pygame.sprite.Sprite):
@@ -255,3 +340,34 @@ class Attack(pygame.sprite.Sprite):
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
+
+class Button :
+    def __init__(self, x, y, width, height, fg, bg, content, fontsize):
+        self.font = pygame.font.Font(size=fontsize)
+        self.content = content
+
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+        self.fg = fg
+        self.bg = bg
+
+        self.image = pygame.Surface((self.width, self.height))
+        self.image.fill(self.bg)
+        self.rect = self.image.get_rect()
+
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+        self.text = self.font.render(self.content, True, self.fg)
+        self.text_rect = self.text.get_rect(center=(self.width / 2, self.height/2))
+        self.image.blit(self.text, self.text_rect)
+
+    def is_pressed(self, pos, pressed):
+        if self.rect.collidepoint(pos):
+            if (pressed[0]):
+                return True
+            return False
+        return False
