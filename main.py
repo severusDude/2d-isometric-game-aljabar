@@ -22,7 +22,12 @@ class Game:
             for j, column in enumerate(row):
                 Ground(self, j, i)
                 if column == "B":
-                    Blocks(self, j, i)
+                    Blocks(self, SPRITE_BLOCK_COORDS['semak'][0], j, i)
+                if column == "S":
+                    Blocks(self, random.choice(
+                        SPRITE_BLOCK_COORDS['batu']), j, i)
+                if column == "L":
+                    Blocks(self, SPRITE_BLOCK_COORDS['lubang'][0], j, i)
                 if column == "P":
                     self.player = Player(self, j, i)
 
