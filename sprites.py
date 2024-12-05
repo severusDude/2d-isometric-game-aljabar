@@ -199,7 +199,7 @@ class Enemy(pygame.sprite.Sprite) :
 
 
 class Blocks(pygame.sprite.Sprite):
-    def __init__(self, game: Game, x, y):
+    def __init__(self, game: Game, sprite_coord: tuple, x, y):
         self.game = game
         self._layer = BLOCK_LAYER
         self.groups = self.game.all_sprites, self.game.blocks
@@ -211,7 +211,7 @@ class Blocks(pygame.sprite.Sprite):
         self.height = TILE_SIZE
 
         self.image = self.game.terrain_spritesheet.get_sprite(
-            *SPRITE_BLOCK_COORD, self.width, self.height)
+            *sprite_coord, self.width, self.height)
 
         self.rect = self.image.get_rect()
         self.rect.x = self.x
@@ -269,54 +269,74 @@ class Attack(pygame.sprite.Sprite):
         direction = self.game.player.facing
 
         right_animations = [
-            self.game.attack_spritesheet.get_sprite(0, 64, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(32, 64, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(64, 64, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(96, 64, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(128, 64, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                0, 64, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                32, 64, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                64, 64, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                96, 64, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                128, 64, self.width, self.height),
         ]
 
         down_animations = [
-            self.game.attack_spritesheet.get_sprite(0, 32, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(32, 32, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(64, 32, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(96, 32, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(128, 32, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                0, 32, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                32, 32, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                64, 32, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                96, 32, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                128, 32, self.width, self.height),
         ]
 
         left_animations = [
-            self.game.attack_spritesheet.get_sprite(0, 96, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(32, 96, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(64, 96, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(96, 96, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(128, 96, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                0, 96, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                32, 96, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                64, 96, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                96, 96, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                128, 96, self.width, self.height),
         ]
 
         up_animations = [
-            self.game.attack_spritesheet.get_sprite(0, 0, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(32, 0, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(64, 0, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(96, 0, self.width, self.height),
-            self.game.attack_spritesheet.get_sprite(128, 0, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                0, 0, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                32, 0, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                64, 0, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                96, 0, self.width, self.height),
+            self.game.attack_spritesheet.get_sprite(
+                128, 0, self.width, self.height),
         ]
 
         if direction == "up":
-            self.image = up_animations(math.floor(self.animation_loop))
+            self.image = up_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "down":
-            self.image = down_animations(math.floor(self.animation_loop))
+            self.image = down_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "left":
-            self.image = left_animations(math.floor(self.animation_loop))
+            self.image = left_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()
         if direction == "right":
-            self.image = right_animations(math.floor(self.animation_loop))
+            self.image = right_animations[math.floor(self.animation_loop)]
             self.animation_loop += 0.5
             if self.animation_loop >= 5:
                 self.kill()

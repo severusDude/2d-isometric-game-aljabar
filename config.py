@@ -4,6 +4,28 @@ SPRITE_ENEMY_FILE = R"img/enemy.png"
 
 SPRITE_BLOCK_COORD = (960, 448)
 SPRITE_TERRAIN_COORD = (64, 352)
+SPRITE_TERRAIN_COORDS = [
+    (0, 352),
+    (32, 352),
+    (64, 352),
+    (96, 352),
+    # (128, 352),
+    # (160, 352),
+]
+
+SPRITE_BLOCK_COORDS = {
+    'batu': [
+        (960, 448),
+        (929, 481),
+    ],
+    'semak': [
+        (352, 352),
+    ],
+    'lubang': [
+        (576, 0)
+    ]
+}
+
 
 SPRITE_CHARACTER = {
     'down': [(3, 2), (35, 2), (68, 2)],
@@ -40,7 +62,7 @@ tilemap = [
     "B..................B",
     "B.......P..........B",
     "B..................B",
-    "B.....BB...........B",
+    "B...BBBBBBBBBBB....B",
     "B......B...........B",
     "B......B...........B",
     "B......B......E....B",

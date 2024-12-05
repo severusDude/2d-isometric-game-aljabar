@@ -24,7 +24,12 @@ class Game:
             for j, column in enumerate(row):
                 Ground(self, j, i)
                 if column == "B":
-                    Blocks(self, j, i)
+                    Blocks(self, SPRITE_BLOCK_COORDS['semak'][0], j, i)
+                if column == "S":
+                    Blocks(self, random.choice(
+                        SPRITE_BLOCK_COORDS['batu']), j, i)
+                if column == "L":
+                    Blocks(self, SPRITE_BLOCK_COORDS['lubang'][0], j, i)
                 if column == "E":
                     Enemy(self, j, i)
                 if column == "P":  
@@ -56,7 +61,7 @@ class Game:
                     if self.player.facing == "left":
                         Attack(self, self.player.rect.x -
                                TILE_SIZE, self.player.rect.y)
-                    if self.player.facing == "up":
+                    if self.player.facing == "right":
                         Attack(self, self.player.rect.x +
                                TILE_SIZE, self.player.rect.y)
 
@@ -76,22 +81,21 @@ class Game:
             self.update()
             self.draw()
 
-
-
     def game_over(self):
         text = self.font.render('Game Over', True, COLOR_WHITE)
         text_rect = text.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2))
 
-        restart_button = Button(10, WIN_HEIGHT - 60, 120, 50, COLOR_WHITE, COLOR_BLACK, 'Restart Game', 32)
+        restart_button = Button(10, WIN_HEIGHT - 60, 120,
+                                50, COLOR_WHITE, COLOR_BLACK, 'Restart Game', 32)
 
-        for sprite in self.all_sprites:  
+        for sprite in self.all_sprites:
             sprite.kill()
-        
+
         while self.running:
-            for event in pygame.event.get(): 
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            
+
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
 
@@ -99,7 +103,7 @@ class Game:
                 self.new()
                 self.main()
 
-            self.screen.blit(self.go_background, (0,0))
+            self.screen.blit(self.go_background, (0, 0))
             self.screen.blit(text, text_rect)
             self.screen.blit(restart_button.image, restart_button.rect)
             self.clock.tick(FPS)
@@ -111,7 +115,8 @@ class Game:
         title = self.font.render('Great Game', True, COLOR_BLACK)
         title_rect = title.get_rect(x=100, y=100)
 
-        play_button = Button(100, 50, 100, 50, COLOR_WHITE, COLOR_BLACK, 'PLAY', 32)
+        play_button = Button(100, 50, 100, 50, COLOR_WHITE,
+                             COLOR_BLACK, 'PLAY', 32)
 
         while intro:
             for event in pygame.event.get():
@@ -125,7 +130,7 @@ class Game:
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
 
-            self.screen.blit(self.intro_background, (0,0))
+            self.screen.blit(self.intro_background, (0, 0))
             self.screen.blit(title, title_rect)
             self.screen.blit(play_button.image, play_button.rect)
             self.clock.tick(FPS)
